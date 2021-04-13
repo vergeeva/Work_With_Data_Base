@@ -7,12 +7,30 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Excel = Microsoft.Office.Interop.Excel;
+using Word = Microsoft.Office.Interop.Word;
 
 namespace DataBase
 {
     public partial class Form3 : Form
     {
         int SelectValue;
+
+        private Excel.Application excelapp; // Программа Excel
+        private Excel.Window excelWindow; // Окно программы Excel
+        private Excel.Workbooks excelappworkbooks; // Рабочие книги
+        private Excel.Workbook excelappworkbook; // Рабочая книга
+        private Excel.Sheets excelsheets; // Рабочие листы
+        private Excel.Worksheet excelworksheet; // Рабочий лист
+        private Excel.Range excelcells; // Диапазон ячеек или ячейка
+
+        private Word.Application WordApp; // Программа Word
+        private Word.Documents WordDocuments; // Документы
+        private Word.Document WordDocument; // Документ
+        private Word.Paragraphs WordParagraphs; // Параграфы
+        private Word.Paragraph WordParagraph; // Параграф
+        private Word.Range WordRange; // Выделенный диапазон
+
         public Form3()
         {
             InitializeComponent();
@@ -212,6 +230,243 @@ MessageBoxIcon.Question);
             }
             stopBindingSource_CurrentChanged(sender, e);
 
+        }
+
+        private void button8_Click(object sender, EventArgs e)
+        {
+            //Передать в Excel
+            // Запустим Excel
+            excelapp = new Excel.Application();
+            // Сделаем Excel видимым
+            excelapp.Visible = true;
+            // В книге, которую создадим позже, будет 3 листа
+            excelapp.SheetsInNewWorkbook = 3;
+            // Создадим книгу
+            excelapp.Workbooks.Add(Type.Missing);
+            // Получаем набор ссылок на объекты Workbook (на созданные книги)
+            excelappworkbooks = excelapp.Workbooks;
+            //Получаем ссылку на книгу 1 - нумерация от 1
+            excelappworkbook = excelappworkbooks[1];
+            // Получаем ссылку на рабочие листы книги
+            excelsheets = excelappworkbook.Worksheets;
+            //Получаем ссылку на лист 1
+            excelworksheet = (Excel.Worksheet)excelsheets[1];
+            // Сделаем первый лист активным
+            excelworksheet.Activate();
+            // Запишем в ячейку A1
+            excelcells = excelworksheet.get_Range("B1", "B1");
+            excelcells.Value2 = "Название остановки";
+
+
+            string[] c = { "A", "B", "C", "D" };
+            // Цикл по строкам таблицы
+            for (int i = 0; i < dataGridView1.RowCount - 1; i++)
+            {
+                // Цикл по столбцам
+                for (int j = 0; j < dataGridView1.ColumnCount; j++)
+                {
+                    // Вывод в ячейку i+2, j Excel-я содержимого соответствующей ячейки
+                    // dataGridView1 
+                    excelcells = excelworksheet.get_Range(c[j] + Convert.ToString(i + 2), c[j] +
+                    Convert.ToString(i + 2));
+                    excelcells.Value2 = dataGridView1.Rows[i].Cells[j].Value.ToString();
+                } // for
+            } // for
+
+            // Размер 12
+            //excelcells.Font.Size = 12;
+            //// Выравнивание по центру
+            //excelcells.HorizontalAlignment = Excel.Constants.xlCenter; //-4108;
+
+
+
+            excelcells = excelworksheet.get_Range("A1", "B" + Convert.ToSingle(dataGridView1.RowCount + 1));
+            Excel.XlBordersIndex bi = Excel.XlBordersIndex.xlInsideVertical;
+            excelcells.Borders[bi].LineStyle = 1;
+            bi = Excel.XlBordersIndex.xlInsideHorizontal;
+            excelcells.Borders[bi].LineStyle = 1;
+            bi = Excel.XlBordersIndex.xlEdgeLeft;
+            excelcells.Borders[bi].LineStyle = 1;
+            bi = Excel.XlBordersIndex.xlEdgeTop;
+            excelcells.Borders[bi].LineStyle = 1;
+            bi = Excel.XlBordersIndex.xlEdgeBottom;
+            excelcells.Borders[bi].LineStyle = 1;
+            bi = Excel.XlBordersIndex.xlEdgeRight;
+            excelcells.Borders[bi].LineStyle = 1;
+
+            excelcells.Font.Size = 12;
+            // Выравнивание по центру
+            excelcells.HorizontalAlignment = Excel.Constants.xlCenter; //-4108;
+                                                                       // Выделим всю таблицу
+            excelcells = excelworksheet.get_Range("A1", "B" + Convert.ToSingle(dataGridView1.RowCount + 1));
+            // Подгоним ширины столбцов
+            excelcells.Columns.AutoFit();
+        }
+
+        private void button9_Click(object sender, EventArgs e)
+        {
+            //Для текущей остановки
+            //Передать в Excel
+            // Запустим Excel
+            excelapp = new Excel.Application();
+            // Сделаем Excel видимым
+            excelapp.Visible = true;
+            // В книге, которую создадим позже, будет 3 листа
+            excelapp.SheetsInNewWorkbook = 3;
+            // Создадим книгу
+            excelapp.Workbooks.Add(Type.Missing);
+            // Получаем набор ссылок на объекты Workbook (на созданные книги)
+            excelappworkbooks = excelapp.Workbooks;
+            //Получаем ссылку на книгу 1 - нумерация от 1
+            excelappworkbook = excelappworkbooks[1];
+            // Получаем ссылку на рабочие листы книги
+            excelsheets = excelappworkbook.Worksheets;
+            //Получаем ссылку на лист 1
+            excelworksheet = (Excel.Worksheet)excelsheets[1];
+            // Сделаем первый лист активным
+            excelworksheet.Activate();
+            // Запишем в ячейку A1
+            excelcells = excelworksheet.get_Range("A1", "A1");
+            excelcells.Value2 = "Вид транспорта";
+            // Запишем в ячейку B1
+            excelcells = excelworksheet.get_Range("B1", "B1");
+            excelcells.Value2 = "Номер маршрута";
+            // Запишем в ячейку C1
+            excelcells = excelworksheet.get_Range("C1", "C1");
+            excelcells.Value2 = "Номер остановки";
+
+            string[] c = { "A", "B", "C"};
+            // Цикл по строкам таблицы
+            for (int i = 0; i < dataGridView2.RowCount - 1; i++)
+            {
+                // Цикл по столбцам
+                for (int j = 2; j < dataGridView2.ColumnCount; j++)
+                {
+                    excelcells = excelworksheet.get_Range(c[j-2] + Convert.ToString(i + 2), c[j-2] + Convert.ToString(i + 2));
+                    excelcells.Value2 = dataGridView2.Rows[i].Cells[j].Value.ToString();
+                } // for
+            } // for
+
+            excelcells = excelworksheet.get_Range("A1", "C" + Convert.ToSingle(dataGridView2.RowCount));
+            Excel.XlBordersIndex bi = Excel.XlBordersIndex.xlInsideVertical;
+            excelcells.Borders[bi].LineStyle = 1;
+            bi = Excel.XlBordersIndex.xlInsideHorizontal;
+            excelcells.Borders[bi].LineStyle = 1;
+            bi = Excel.XlBordersIndex.xlEdgeLeft;
+            excelcells.Borders[bi].LineStyle = 1;
+            bi = Excel.XlBordersIndex.xlEdgeTop;
+            excelcells.Borders[bi].LineStyle = 1;
+            bi = Excel.XlBordersIndex.xlEdgeBottom;
+            excelcells.Borders[bi].LineStyle = 1;
+            bi = Excel.XlBordersIndex.xlEdgeRight;
+            excelcells.Borders[bi].LineStyle = 1;
+
+            excelcells.Font.Size = 12;
+            // Выравнивание по центру
+            excelcells.HorizontalAlignment = Excel.Constants.xlCenter; //-4108;
+                                                                       // Выделим всю таблицу
+            excelcells = excelworksheet.get_Range("A1", "C" + Convert.ToSingle(dataGridView1.RowCount));
+            // Подгоним ширины столбцов
+            excelcells.Columns.AutoFit();
+        }
+
+        private void button10_Click(object sender, EventArgs e)
+        {
+
+            //Для закрепления полученных знаний, самостоятельно выведите в Word
+            //список остановок и маршрутов, проходящих через остановку
+
+
+            // Запускаем Word
+            WordApp = new Word.Application();
+            // Делаем Word видимым
+            WordApp.Visible = true;
+
+            WordDocuments = WordApp.Documents;
+            // Добавляем документ
+            WordDocument = WordDocuments.Add();
+
+            // Получаем доступ к объекту все параграфы
+            WordParagraphs = WordDocument.Content.Paragraphs;
+            // Получаем доступ к объекту первый параграф
+            WordParagraph = WordParagraphs[1];
+            // Устанавливаем выравнивание по центру
+            WordParagraph.Alignment =
+            Word.WdParagraphAlignment.wdAlignParagraphCenter;
+            // Получаем доступ к объекту выделенный участок
+            WordRange = WordParagraph.Range;
+            // Добавим текст в выделенный участок
+
+            WordRange.InsertAfter("Остановки общественного транспорта\n");
+            // Сделаем шрифт выделенного участка жирным
+            WordRange.Font.Bold = 1;
+            // Сделаем размер шрифта выделенного участка равным 16
+            WordRange.Font.Size = 16;
+            // Сбросим выделение участка
+            WordRange.Collapse(Word.WdCollapseDirection.wdCollapseEnd);
+            // Сейчас выделенным участком будет пустой участок в конце текста
+            WordRange = WordParagraph.Range;
+            // Добавим текст, он будет выделенным участком.
+            WordRange.InsertAfter("по состоянию на " +
+             DateTime.Now.ToLongDateString() + "\n");
+            // Сделаем шрифт выделенного участка нежирным
+            WordRange.Font.Bold = 0;
+            // Сделаем размер шрифта выделенного участка равным 14
+            WordRange.Font.Size = 14;
+            int i = 0, j = 0;
+            // Цикл по записям таблицы route
+            for (stopBindingSource.MoveFirst(); i < stopBindingSource.Count;
+ stopBindingSource.MoveNext())
+            {
+                // Получаем доступ к объекту текущая запись таблицы stop
+                DataRowView drv1 = stopBindingSource.Current as DataRowView;
+
+                int Stop_ID = Convert.ToInt32(drv1.Row["Stop_ID"]);
+                string Name = drv1.Row["Name"].ToString();
+                // Добавим параграф
+                WordParagraph = WordParagraphs.Add();
+                // Устанавливаем выравнивание по левой границе
+                WordParagraph.Alignment =
+                Word.WdParagraphAlignment.wdAlignParagraphLeft;
+                // Получим доступ к выделенному участку нового параграфа
+                WordRange = WordParagraph.Range;
+                // Установим шрифт выделенного участка нового параграфа
+                WordRange.Font.Bold = 0;
+                WordRange.Font.Size = 12;
+                // Добавим текст в новый параграф
+                WordRange.InsertAfter(Convert.ToString(Stop_ID) + ". " + Name);
+
+                j = 0;
+                // Заполним набор данных DataTable1
+                dataTable2TableAdapter.Fill(transportDataSet1.DataTable2, Stop_ID);
+                // Цикл по записям таблицы DataTable1
+                for (dataTable2BindingSource.MoveFirst();
+                j < dataTable2BindingSource.Count;
+                dataTable2BindingSource.MoveNext())
+                {
+                    // Получаем доступ к объекту текущая запись DataTable1
+                    DataRowView drv2 = dataTable2BindingSource.Current as
+                    DataRowView;
+                    // Получаем значения полей StopNumb, number
+                    int StopNumb = Convert.ToInt32(drv2.Row["StopNumb"]);
+                    int Numbr = Convert.ToInt32(drv2.Row["Number"]);
+                    string RType = drv2.Row["Type"].ToString();
+                    // Добавим параграф
+                    WordParagraph = WordParagraphs.Add();
+                    // Устанавливаем выравнивание по левой границе
+                    WordParagraph.Alignment =
+                    Word.WdParagraphAlignment.wdAlignParagraphLeft;
+                    // Получим доступ к выделенному участку нового параграфа
+                    WordRange = WordParagraph.Range;
+                    // Установим шрифт выделенного участка нового параграфа
+                    WordRange.Font.Bold = 0;
+                    WordRange.Font.Size = 12;
+                    // Добавим текст в новый параграф
+                    WordRange.InsertAfter("\t"  + "— " + RType + " " + Convert.ToString(Numbr) + ". Номер остановки: " + Convert.ToString(StopNumb));
+                    j++;
+                } // for
+                i++;
+            } // f
         }
     }
 }
