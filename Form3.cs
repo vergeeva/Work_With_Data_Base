@@ -148,58 +148,70 @@ MessageBoxIcon.Question);
 
         private void button5_Click(object sender, EventArgs e)
         {
-            // Изменить для втоого ГридВью
-            DataRowView drv = dataTable1BindingSource.Current as DataRowView;
+            //Изменить для второго
+            DataRowView drv = dataTable2BindingSource.Current as DataRowView;
+            String RType = Convert.ToString(drv.Row["Type"]);
+            int Number = Convert.ToInt32(drv.Row["Number"]);
+            int StopNumb = Convert.ToInt32(drv.Row["StopNumb"]);
+
             int Route_ID = Convert.ToInt32(drv.Row["Route_ID"]);
             int Stop_ID = Convert.ToInt32(drv.Row["Stop_ID"]);
-            int StopNumb = Convert.ToInt32(drv.Row["StopNumb"]);
-            Form5 f5 = new Form5();
-            f5.StopNumber = StopNumb;
-            f5.Stop_ID = Stop_ID;
-            f5.ShowDialog();
 
-            if (f5.Rc)
+
+
+            Form6 f6 = new Form6();
+            f6.StopNumber = StopNumb;
+            f6.comboBox1.Text = RType;
+            f6.comboBox2.Text = Convert.ToString(Number);
+            f6.ShowDialog();
+
+
+            if (f6.Rc)
             {
-                dataTable1TableAdapter.Connection.Open();
-                dataTable1TableAdapter.Adapter.UpdateCommand.Parameters["Route_ID"]
+                dataTable2TableAdapter.Connection.Open();
+                dataTable2TableAdapter.Adapter.UpdateCommand.Parameters["Route_ID"]
                 .Value = Route_ID;
-                dataTable1TableAdapter.Adapter.UpdateCommand.Parameters
-                ["StopNumb"].Value = f5.StopNumber;
-                dataTable1TableAdapter.Adapter.UpdateCommand.Parameters
+                dataTable2TableAdapter.Adapter.UpdateCommand.Parameters
+                ["StopNumb"].Value = f6.StopNumber;
+                dataTable2TableAdapter.Adapter.UpdateCommand.Parameters
                 ["Original_Route_ID"].Value = Route_ID;
-                dataTable1TableAdapter.Adapter.UpdateCommand.Parameters
+                dataTable2TableAdapter.Adapter.UpdateCommand.Parameters
                 ["Original_StopNumb"].Value = StopNumb;
-                dataTable1TableAdapter.Adapter.UpdateCommand.Parameters["Stop_ID"].
-                Value = f5.Stop_ID;
-                dataTable1TableAdapter.Adapter.UpdateCommand.ExecuteNonQuery();
-                this.dataTable1TableAdapter.Fill(this.transportDataSet.DataTable1,
+                dataTable2TableAdapter.Adapter.UpdateCommand.Parameters["Stop_ID"].
+                Value = Stop_ID;
+                dataTable2TableAdapter.Adapter.UpdateCommand.ExecuteNonQuery();
+                this.dataTable2TableAdapter.Fill(this.transportDataSet1.DataTable2,
                 Route_ID);
-                dataTable1TableAdapter.Adapter.Update(this.transportDataSet.DataTable1);
-                dataTable1TableAdapter.Connection.Close();
+                dataTable2TableAdapter.Adapter.Update(this.transportDataSet1.DataTable2);
+                dataTable2TableAdapter.Connection.Close();
             }
+            stopBindingSource_CurrentChanged(sender, e);
         }
 
         private void button4_Click(object sender, EventArgs e)
         {
-            //// Удалить для второго ГридВью
-            //DataRowView drv = dataTable2BindingSource.Current as DataRowView;
-            //int Stop_ID = Convert.ToInt32(drv.Row["Stop_ID"]);
-            //int StopNumb = Convert.ToInt32(drv.Row["StopNumb"]);
-            //var result = MessageBox.Show("Удалить из маршрута?", "Вопрос",
-            //MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-            //if (result == DialogResult.Yes)
-            //{
-            //    dataTable2TableAdapter.Connection.Open();
-            //    dataTable2TableAdapter.Adapter.DeleteCommand.Parameters["Stop_ID"].
-            //    Value = Stop_ID;
-            //    dataTable2TableAdapter.Adapter.DeleteCommand.Parameters
-            //    ["StopNumb"].Value = StopNumb;
-            //    dataTable2TableAdapter.Adapter.DeleteCommand.ExecuteNonQuery();
-            //    this.dataTable2TableAdapter.Fill(this.transportDataSet1.DataTable2,
-            //    Stop_ID);
-            //    dataTable2TableAdapter.Adapter.Update(this.transportDataSet1.DataTable2);
-            //    dataTable2TableAdapter.Connection.Close();
-            //}
+            //Удалить для второго
+            // Удалить для второго ГридВью
+            DataRowView drv = dataTable2BindingSource.Current as DataRowView;
+            int Route_ID = Convert.ToInt32(drv.Row["Route_ID"]);
+            int StopNumb = Convert.ToInt32(drv.Row["StopNumb"]);
+            var result = MessageBox.Show("Удалить остановку?", "Вопрос",
+            MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            if (result == DialogResult.Yes)
+            {
+                dataTable2TableAdapter.Connection.Open();
+                dataTable2TableAdapter.Adapter.DeleteCommand.Parameters["Route_ID"].
+                Value = Route_ID;
+                dataTable2TableAdapter.Adapter.DeleteCommand.Parameters
+                ["StopNumb"].Value = StopNumb;
+                dataTable2TableAdapter.Adapter.DeleteCommand.ExecuteNonQuery();
+                this.dataTable2TableAdapter.Fill(this.transportDataSet1.DataTable2,
+                Route_ID);
+                dataTable2TableAdapter.Adapter.Update(this.transportDataSet1.DataTable2);
+                dataTable2TableAdapter.Connection.Close();
+            }
+            stopBindingSource_CurrentChanged(sender, e);
+
         }
     }
 }

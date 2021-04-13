@@ -36,33 +36,29 @@ namespace DataBase
             this.route1BindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.transportDataSet2 = new DataBase.TransportDataSet();
             this.routeBindingSource = new System.Windows.Forms.BindingSource(this.components);
-            this.transportDataSet = new DataBase.TransportDataSet();
             this.label2 = new System.Windows.Forms.Label();
             this.routeTableAdapter = new DataBase.TransportDataSetTableAdapters.RouteTableAdapter();
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
             this.button1 = new System.Windows.Forms.Button();
             this.comboBox2 = new System.Windows.Forms.ComboBox();
-            this.route1BindingSource1 = new System.Windows.Forms.BindingSource(this.components);
-            this.transportDataSet4 = new DataBase.TransportDataSet();
+            this.route2BindingSource1 = new System.Windows.Forms.BindingSource(this.components);
             this.route2BindingSource = new System.Windows.Forms.BindingSource(this.components);
-            this.transportDataSet3 = new DataBase.TransportDataSet();
-            this.transportDataSet1 = new DataBase.TransportDataSet();
+            this.route1BindingSource1 = new System.Windows.Forms.BindingSource(this.components);
             this.routeBindingSource1 = new System.Windows.Forms.BindingSource(this.components);
             this.routeBindingSource2 = new System.Windows.Forms.BindingSource(this.components);
             this.route1TableAdapter = new DataBase.TransportDataSetTableAdapters.Route1TableAdapter();
             this.route2TableAdapter = new DataBase.TransportDataSetTableAdapters.Route2TableAdapter();
+            this.transportDataSet2BindingSource = new System.Windows.Forms.BindingSource(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.route1BindingSource)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.transportDataSet2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.routeBindingSource)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.transportDataSet)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.route1BindingSource1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.transportDataSet4)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.route2BindingSource1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.route2BindingSource)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.transportDataSet3)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.transportDataSet1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.route1BindingSource1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.routeBindingSource1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.routeBindingSource2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.transportDataSet2BindingSource)).BeginInit();
             this.SuspendLayout();
             // 
             // button3
@@ -98,6 +94,7 @@ namespace DataBase
             this.comboBox1.Size = new System.Drawing.Size(184, 24);
             this.comboBox1.TabIndex = 17;
             this.comboBox1.SelectedIndexChanged += new System.EventHandler(this.comboBox1_SelectedIndexChanged);
+            this.comboBox1.Click += new System.EventHandler(this.comboBox1_Click);
             // 
             // route1BindingSource
             // 
@@ -108,16 +105,6 @@ namespace DataBase
             // 
             this.transportDataSet2.DataSetName = "TransportDataSet";
             this.transportDataSet2.SchemaSerializationMode = System.Data.SchemaSerializationMode.IncludeSchema;
-            // 
-            // routeBindingSource
-            // 
-            this.routeBindingSource.DataMember = "Route";
-            this.routeBindingSource.DataSource = this.transportDataSet;
-            // 
-            // transportDataSet
-            // 
-            this.transportDataSet.DataSetName = "TransportDataSet";
-            this.transportDataSet.SchemaSerializationMode = System.Data.SchemaSerializationMode.IncludeSchema;
             // 
             // label2
             // 
@@ -164,49 +151,18 @@ namespace DataBase
             // 
             // comboBox2
             // 
-            this.comboBox2.DataSource = this.route2BindingSource;
+            this.comboBox2.DataSource = this.route2BindingSource1;
             this.comboBox2.DisplayMember = "Number";
             this.comboBox2.FormattingEnabled = true;
             this.comboBox2.Location = new System.Drawing.Point(202, 110);
             this.comboBox2.Name = "comboBox2";
             this.comboBox2.Size = new System.Drawing.Size(72, 24);
             this.comboBox2.TabIndex = 25;
-            this.comboBox2.ValueMember = "Type";
             // 
-            // route1BindingSource1
+            // route2BindingSource1
             // 
-            this.route1BindingSource1.DataMember = "Route1";
-            this.route1BindingSource1.DataSource = this.transportDataSet4;
-            // 
-            // transportDataSet4
-            // 
-            this.transportDataSet4.DataSetName = "TransportDataSet";
-            this.transportDataSet4.SchemaSerializationMode = System.Data.SchemaSerializationMode.IncludeSchema;
-            // 
-            // route2BindingSource
-            // 
-            this.route2BindingSource.DataMember = "Route2";
-            this.route2BindingSource.DataSource = this.transportDataSet3;
-            // 
-            // transportDataSet3
-            // 
-            this.transportDataSet3.DataSetName = "TransportDataSet";
-            this.transportDataSet3.SchemaSerializationMode = System.Data.SchemaSerializationMode.IncludeSchema;
-            // 
-            // transportDataSet1
-            // 
-            this.transportDataSet1.DataSetName = "TransportDataSet";
-            this.transportDataSet1.SchemaSerializationMode = System.Data.SchemaSerializationMode.IncludeSchema;
-            // 
-            // routeBindingSource1
-            // 
-            this.routeBindingSource1.DataMember = "Route";
-            this.routeBindingSource1.DataSource = this.transportDataSet1;
-            // 
-            // routeBindingSource2
-            // 
-            this.routeBindingSource2.DataMember = "Route";
-            this.routeBindingSource2.DataSource = this.transportDataSet1;
+            this.route2BindingSource1.DataMember = "Route2";
+            this.route2BindingSource1.DataSource = this.transportDataSet2;
             // 
             // route1TableAdapter
             // 
@@ -216,11 +172,16 @@ namespace DataBase
             // 
             this.route2TableAdapter.ClearBeforeFill = true;
             // 
+            // transportDataSet2BindingSource
+            // 
+            this.transportDataSet2BindingSource.DataSource = this.transportDataSet2;
+            this.transportDataSet2BindingSource.Position = 0;
+            // 
             // Form6
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(433, 204);
+            this.ClientSize = new System.Drawing.Size(432, 204);
             this.Controls.Add(this.comboBox2);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.textBox1);
@@ -235,14 +196,12 @@ namespace DataBase
             ((System.ComponentModel.ISupportInitialize)(this.route1BindingSource)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.transportDataSet2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.routeBindingSource)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.transportDataSet)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.route1BindingSource1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.transportDataSet4)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.route2BindingSource1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.route2BindingSource)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.transportDataSet3)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.transportDataSet1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.route1BindingSource1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.routeBindingSource1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.routeBindingSource2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.transportDataSet2BindingSource)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -252,25 +211,23 @@ namespace DataBase
 
         private System.Windows.Forms.Button button3;
         private System.Windows.Forms.Button button2;
-        private System.Windows.Forms.ComboBox comboBox1;
+        public System.Windows.Forms.ComboBox comboBox1;
         private System.Windows.Forms.Label label2;
-        private TransportDataSet transportDataSet;
         private System.Windows.Forms.BindingSource routeBindingSource;
         private TransportDataSetTableAdapters.RouteTableAdapter routeTableAdapter;
         private System.Windows.Forms.TextBox textBox1;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.ComboBox comboBox2;
-        private TransportDataSet transportDataSet1;
+        public System.Windows.Forms.ComboBox comboBox2;
         private System.Windows.Forms.BindingSource routeBindingSource1;
         private System.Windows.Forms.BindingSource routeBindingSource2;
         private TransportDataSet transportDataSet2;
         private System.Windows.Forms.BindingSource route1BindingSource;
         private TransportDataSetTableAdapters.Route1TableAdapter route1TableAdapter;
         private System.Windows.Forms.BindingSource route2BindingSource;
-        private TransportDataSet transportDataSet3;
         private TransportDataSetTableAdapters.Route2TableAdapter route2TableAdapter;
-        private TransportDataSet transportDataSet4;
         private System.Windows.Forms.BindingSource route1BindingSource1;
+        private System.Windows.Forms.BindingSource route2BindingSource1;
+        private System.Windows.Forms.BindingSource transportDataSet2BindingSource;
     }
 }

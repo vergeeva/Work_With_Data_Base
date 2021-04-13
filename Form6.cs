@@ -21,8 +21,10 @@ namespace DataBase
         }
         public int Route_ID
         {
-            get { return Convert.ToInt32(comboBox1.SelectedValue); }
-            set { comboBox1.SelectedValue = value; }
+            get {
+                
+                return Convert.ToInt32(transportDataSet2.Route2[route2BindingSource1.Position].Route_ID); }
+            set {}
         }
         public Form6()
         {
@@ -31,11 +33,14 @@ namespace DataBase
 
         private void Form6_Load(object sender, EventArgs e)
         {
-            route2TableAdapter.Fill(this.transportDataSet2.Route2, "Автобус");
-            // TODO: данная строка кода позволяет загрузить данные в таблицу "transportDataSet4.Route1". При необходимости она может быть перемещена или удалена.
-            this.route1TableAdapter.Fill(this.transportDataSet2.Route1);
-            // TODO: данная строка кода позволяет загрузить данные в таблицу "transportDataSet1.Route". При необходимости она может быть перемещена или удалена.
-            this.routeTableAdapter.Fill(this.transportDataSet1.Route);
+            if (textBox1.Text != "")
+            {
+                comboBox1.Enabled = false;
+                comboBox2.Enabled = false;
+            }
+            // this.route1TableAdapter.Fill(this.transportDataSet2.Route1);
+            //transportDataSet2.Route2.FindByRoute_ID();
+            //comboBox1_SelectedIndexChanged(sender, e);
         }
 
         private void button2_Click(object sender, EventArgs e)
@@ -57,28 +62,16 @@ namespace DataBase
             comboBox1.SelectedValue = Frm.SelectedValue;
         }
 
-        //private void fillByToolStripButton_Click(object sender, EventArgs e)
-        //{
-        //    try
-        //    {
-        //        this.routeTableAdapter.FillBy(this.transportDataSet.Route);
-        //    }
-        //    catch (System.Exception ex)
-        //    {
-        //        System.Windows.Forms.MessageBox.Show(ex.Message);
-        //    }
-
-        //}
-
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
-            // Определим текущую запись
-            // Определим значение поля Route_ID текущей записи
             String Type = comboBox1.Text;
-
             route2TableAdapter.Fill(transportDataSet2.Route2, Type);
         }
 
-
+        private void comboBox1_Click(object sender, EventArgs e)
+        {
+            this.route1TableAdapter.Fill(this.transportDataSet2.Route1);
+            comboBox1_SelectedIndexChanged(sender, e);
+        }
     }
 }
