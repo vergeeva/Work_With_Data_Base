@@ -92,7 +92,14 @@ MessageBoxIcon.Question);
                 DataGridViewRow dgvr = dataGridView1.CurrentRow;
                 Int32 ID = Convert.ToInt32(dgvr.Cells[0].Value);
                 String Name = dgvr.Cells[1].Value as String;
-                stopTableAdapter.Delete(ID, Name);
+                try
+                {
+                    stopTableAdapter.Delete(ID, Name);
+                }
+                catch
+                {
+                    MessageBox.Show("Нельзя удалить остановку, пока она имеет связи");
+                }
                 this.stopTableAdapter.Fill(this.transportDataSet.Stop);
             }
         }
@@ -157,7 +164,7 @@ MessageBoxIcon.Question);
                 }
                 catch (Exception)
                 {
-                    throw;
+                    MessageBox.Show("Чтобы поставить этим номером данную установку, сначала удалите текщую");
                 }
 
                 dataTable2TableAdapter.Connection.Close();

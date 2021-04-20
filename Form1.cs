@@ -94,7 +94,14 @@ namespace DataBase
                 String Type = dgvr.Cells[1].Value as String;
                 Int32 Number = Convert.ToInt32(dgvr.Cells[2].Value);
                 String Comment = dgvr.Cells[3].Value as String;
-                routeTableAdapter.Delete(ID, Type, Number, Comment);
+                try
+                {
+                    routeTableAdapter.Delete(ID, Type, Number, Comment);
+                }
+                catch
+                {
+                    MessageBox.Show("Пока маршрут имеет связи, его нельзя удалить");
+                }
                 this.routeTableAdapter.Fill(this.transportDataSet.Route);
             }
         }
@@ -146,14 +153,22 @@ namespace DataBase
                 Value = f5.Stop_ID;
 
                 // Выполним запрос insert
-                dataTable1TableAdapter.Adapter.InsertCommand.ExecuteNonQuery();
-                // Для обновления таблицы выполним запрос select и перезаполним
-                // dataTable1BindingSource
-                this.dataTable1TableAdapter.Fill(this.transportDataSet.DataTable1,
-                Route_ID);
-                // Подтвердим изменения в базе
-                dataTable1TableAdapter.Adapter.Update(this.transportDataSet.DataTable1);
-                // Закроем подключение адаптера к базе данных
+                try
+                {
+                    dataTable1TableAdapter.Adapter.InsertCommand.ExecuteNonQuery();
+                    // Для обновления таблицы выполним запрос select и перезаполним
+                    // dataTable1BindingSource
+                    this.dataTable1TableAdapter.Fill(this.transportDataSet.DataTable1,
+                    Route_ID);
+                    // Подтвердим изменения в базе
+                    dataTable1TableAdapter.Adapter.Update(this.transportDataSet.DataTable1);
+                    // Закроем подключение адаптера к базе данных
+                }
+                catch
+                {
+                    MessageBox.Show("Чтобы добавить остановку с данным номером, нужно для начала удалить текущую остановки с идентичным номером");
+                }
+
                 dataTable1TableAdapter.Connection.Close();
             } // if
         }
